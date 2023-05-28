@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<div class="container pt-3 mb-5">
+    <h2 class="text-center">Room #: {{room}}</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <img src="{{room.image.url}}" class="card-img-top">
+        </div>
+        <div class="col-lg-6">
+            <h5 class="card-title text-center">Room #: {{ room.room_number }}</h5>
+
+                <p class="card-text text-center">
+                    Price: {{room.price|intcomma}}
+            </p>
+            <form method="POST" action="{% url 'book_room' room_id=room.id %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Guest Name</label>
+                  <input type="text" class="form-control" name="guest_name" id="exampleInputEmail1" required>
+                  
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Check In Date</label>
+                  <input type="date" name="check_in_date" class="form-control" id="exampleInputPassword1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Check Out Date</label>
+                    <input type="date" name="check_out_date" class="form-control" id="exampleInputPassword1" required>
+                </div>
+                <!-- <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                  <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div> -->
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

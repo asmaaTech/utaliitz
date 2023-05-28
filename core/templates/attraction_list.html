@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container pt-3 mb-4 text-center">
+
+    <h1 class="text-center mb-2">{{type}} Attractions</h1>
+
+    <div class="row">
+    
+        {% for attraction in attractions %}
+        <div class="col-lg-3">
+        <a href="{% url 'attraction_detail' attraction.id %}"  style="text-decoration: none;">
+            <img src="{{attraction.image.url}}" alt="" class="img-fluid">
+            <p>{{ attraction.name }}</p>
+            <button class="btn btn-warning btn-sm">Visit Now</button>
+        </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

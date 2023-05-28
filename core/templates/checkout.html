@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container pt-4 mb-4">
+<h3>Confirm Booking</h3>
+<p>Guest Name: {{ booking.guest_name }}</p>
+<p>Check-in Date: {{ booking.check_in_date }}</p>
+<p>Check-out Date: {{ booking.check_out_date }}</p>
+
+<form id="checkout" method="POST" action="{% url 'process_payment' booking_id=booking.id %}">
+    {% csrf_token %}
+    <div id="payment-form"></div>
+    <input type="submit" value="Pay Now" class="btn btn-primary">
+</form>
+
+<script src="https://js.braintreegateway.com/web/dropin/1.30.1/js/dropin.min.js"></script>
+<script>
+    var form = document.querySelector('#checkout');
+    var client_token = "{{ client_token }}";
+
+    braintree.dropin.create({
+        authorization: client_token,
+        container: '#payment-form'
+    }, function (createErr, instance) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            instance.requestPaymentMethod(function (err, payload) {
+                if (err) {
+                    console.log('Error', err);
+                    return;
+                }
+
+                // Set the payment method nonce value
+                var nonceInput = document.createElement('input');
+                nonceInput.setAttribute('type', 'hidden');
+                nonceInput.setAttribute('name', 'payment_method_nonce');
+                nonceInput.setAttribute('value', payload.nonce);
+                form.appendChild(nonceInput);
+
+                // Submit the form
+                form.submit();
+            });
+        });
+    });
+</script>
+</div>
+{% endblock %}

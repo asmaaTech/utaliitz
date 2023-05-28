@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    img{
+        border-radius: 10px;
+    }
+
+    p{
+        text-align: justify;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+
+</style>
+
+<div class="container pt-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            
+                    <!-- Swiper -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="/media/mount-kilimanjaro-ga972f3f48_1280.jpg" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="/media/attractions/kenya-g89f3bac95_1280.jpg" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="/media/attractions/mountain-gb60df0d25_1280.jpg" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="/media/attractions/national-park-geb34171b0_1280.jpg" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="/media/attractions/mountain-gb60df0d25_1280.jpg" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="/media/mount-kilimanjaro-ga972f3f48_1280.jpg" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="/media/attractions/mountain-ga86ca3500_1920.jpg" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="/media/attractions/kenya-g89f3bac95_1280.jpg" alt="">
+      </div>
+      
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+          
+        </div>
+            
+       
+        <div class="col-lg-6">
+            <p>Tanzania, a captivating East African nation, offers a remarkable tapestry of natural wonders and cultural diversity. From the iconic plains of the Serengeti, where the Great Migration unfolds its awe-inspiring spectacle, to the majestic Mount Kilimanjaro, Africa's highest peak, Tanzania embodies breathtaking landscapes. Its diverse wildlife reserves, such as the Ngorongoro Crater and Tarangire National Park, house an array of fascinating species, while the azure waters of Zanzibar's pristine beaches allure sunseekers and history enthusiasts alike. Vibrant Maasai traditions and Swahili influences enrich Tanzania's cultural fabric, captivating visitors with their art, music, and warm hospitality. With its untamed beauty and enchanting experiences, Tanzania beckons adventurers and wanderers to embark on an unforgettable journey.
+                <a href="">View More</a>
+            </p>
+        </div>
+    </div>
+</div>
+    
+
+
+    <div class="container pt-3">
+        <h1>What are you interested With</h1>
+        <div class="row">
+        {% for type in types %}
+        <div class="col-lg-3">
+            <div class="card h-100 px-3 py-3 text-center">
+                
+            <a href="{% url 'attraction_list' type.id %}" style="text-decoration: none;color: black;">
+        <img src="{{type.image.url}}" alt="" class="img-fluid"><br>
+        {{ type.name }}
+        
+        </a>
+        <small><a button class="btn btn-sm btn-warning text-center" href="{% url 'attraction_list' type.id %}">See Attractions</button></a></small>
+            
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+
+
+
+    <div class="container pt-3">
+        <p class="fs-2">Watch the Royal Tour Film</p>
+        <div class="row">
+            <div class="col-lg-6">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/9ZS0GgAIvtE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="col-lg-6"></div>
+        </div>
+    </div>
+
+    
+
+
+{% endblock %}

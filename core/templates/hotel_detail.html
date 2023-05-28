@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    .xzoom-thumbs img{
+         display: inline-block;
+         height: 70px;
+         width: 70px;
+         border: 1px solid rgb(255, 255, 255);
+         cursor: pointer;
+         transition: 5ms;
+         justify-content: center;
+         text-align: center;
+}
+</style>
+
+<div class="container mb-5">
+<p class="fs-2 text-center">{{ hotel.name }}</p>
+<div class="row">
+ <div class="col-lg-6">
+     <img src="{{hotel.image.url}}" alt="" class="block__pic img-fluid" id="imageBox">
+
+     <div class="xzoom-thumbs pt-4">
+         {% for image in hotel.hotelimages.all %}
+         <img src="{{image.images.url}}" alt="" class="xzoom-gallery img-fluid" onclick="myFunction(this)">
+         {% endfor %}
+     </div>
+ </div>
+ <div class="col-lg-6">
+     <p>Location: {{ hotel.attraction.location }}</p>
+     
+     <p>{{hotel.content|safe}}</p>
+
+
+
+ </div>
+</div>
+</div>
+
+<div class="container mb-3">
+    <h1>Available Rooms</h1>
+    <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+        
+        {% for room in hotel.hotelrooms.all %}
+        <div class="col-lg-4">
+        <div class="card h-100">
+            <a href="{% url 'book_room' room.id  %}" style="text-decoration: none;color: black;">
+            <img src="{{room.image.url}}" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title text-center">Room #: {{ room.room_number }}</h5>
+
+                <p class="card-text text-center">
+                    Price: {{room.price|intcomma}}
+                </p>
+
+                <button class="btn bg-primary bg-gradient text-light btn-sm">Book Now</button>
+            
+            </div>
+            </a>
+        </div>
+        </div>
+        {% endfor %}
+       
+    </div>
+</div>
+
+{% endblock %}

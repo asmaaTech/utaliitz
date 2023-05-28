@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .xzoom-thumbs img{
+         display: inline-block;
+         height: 70px;
+         width: 70px;
+         border: 1px solid rgb(255, 255, 255);
+         cursor: pointer;
+         transition: 5ms;
+         justify-content: center;
+         text-align: center;
+}
+</style>
+
+
+<div class="container mb-5">
+<p class="fs-2 text-center">{{ hotel.name }}</p>
+<div class="row">
+ <div class="col-lg-6">
+     <img src="{{operator.image.url}}" alt="" class="block__pic img-fluid" id="imageBox">
+     <div class="xzoom-thumbs pt-4">
+        {% for image in operator.operatorimages.all %}
+        <img src="{{image.images.url}}" alt="" class="xzoom-gallery img-fluid" onclick="myFunction(this)">
+        {% endfor %}
+    </div>
+
+ </div>
+ <div class="col-lg-6">
+     <p>Location: {{ operator.attraction.location }}</p>
+     <p>Phone Number: {{ operator.phone_number}}</p>
+     <p>Email: {{ operator.email}}</p>
+     <p>{{operator.content|safe}}</p>
+
+     <div class="pt-4">
+
+        <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Send Message
+          </button>
+          
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Contact Tour Operator</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    
+                        <div class="featured-box py-3 px-3">
+                          <form action="." method="POST" role="form" class="">
+                            {% csrf_token %}
+                          <div class="row">
+                            <div class="col-md-6 form-group">
+                              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="col-md-6 form-group mt-3 mt-md-0">
+                              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                            </div>
+                          </div>
+                          <div class="form-group mt-3">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                          </div>
+                          <div class="form-group mt-3">
+                            <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                          </div>
+                          <br>
+                          <!-- <div class="text-center"><button type="submit" class="btn btn-outline-primary">Send Message</button></div> -->
+                        
+                        </div>
+                     
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Send Message</button>
+                  
+                </div>
+            </form>
+              </div>
+            </div>
+          </div>
+        
+     </div>
+
+ </div>
+</div>
+</div>
+
+
+
+
+{% endblock %}

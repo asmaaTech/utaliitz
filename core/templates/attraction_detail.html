@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    	   .xzoom-thumbs img{
+                display: inline-block;
+                height: 70px;
+                width: 70px;
+                border: 1px solid rgb(255, 255, 255);
+                cursor: pointer;
+                transition: 5ms;
+                justify-content: center;
+                text-align: center;
+    }
+</style>
+
+<div class="container">
+    <p class="fs-2 text-center">{{ attraction.name }}</p>
+    <div class="row">
+        <div class="col-lg-6">
+            <img src="{{attraction.image.url}}" alt="" class="block__pic img-fluid" id="imageBox">
+
+            <div class="xzoom-thumbs pt-4">
+                {% for image in attraction.attractionimages.all %}
+                <img src="{{image.images.url}}" alt="" class="xzoom-gallery img-fluid" onclick="myFunction(this)">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <p>Location: {{ attraction.location }}</p>
+            <p>{{attraction.content|safe}}</p>
+
+            <div class="">
+              <h3>Fees</h3>
+              <table class="table table-sm table-borderless table-striped">
+                <tr>
+                  <th>Name</th>
+                  <th>Currency</th>
+                  <th>Amount</th>
+                </tr>
+                {% for fee in attraction.attractionfees.all %}
+                <tr>
+                  <td>{{fee.name}}</td>
+                  <td>{{fee.currency}}</td>
+                  <td>{{fee.amount|intcomma}}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+        </div>
+    </div>
+    
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Interesting facts about {{ attraction.name }} </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Hotels in {{attraction.location}}</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Local Tour Operators</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <h2>Interesting Facts:</h2>
+   
+            {% for fact in interesting_facts %}
+                <p>{{ fact.facts|safe }}</p>
+            {% empty %}
+                <p>No Interesting Facts found.</p>
+            {% endfor %}
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+           
+            <div class="row pt-3">
+                <div class="swiper mySwiper">
+                  <div class="swiper-wrapper">
+                    
+                    {% for hotel in hotels %}
+                    
+                          <div class="swiper-slide">
+                            
+                            <div class="row justify-content-center">
+                                
+                              <div class="card">
+                                  <a href="{% url 'hotel_detail' hotel.id  %}" style="text-decoration: none;color: black;">
+                                  <img src="{{hotel.image.url}}" class="card-img-top">
+              
+                                  <div class="card-body">
+                                  
+                                      
+                                  
+                                  
+                                    <p class="card-title" style="text-align: center;">{{hotel.name}}</p>
+                                    <p class="card-title" style="text-align: center;">Daily Price: TZS {{hotel.price_per_day|intcomma}}</p>
+                                    <!-- <button class="btn btn-info btn-sm text-center">See More</button> -->
+                                  </a>
+                                 
+                                
+                                  </div>
+                              </div>
+                            </div>
+                       
+                         
+                    </div>
+                    {% empty %}
+                    <p>No Hotels found.</p>
+                    {% endfor %}
+                          
+                      </div>
+                      
+                      
+                       <div class="swiper-pagination"></div> 
+                      <!-- <div class="swiper-button-prev"></div>
+                      <div class="swiper-button-next"></div> -->
+                      <div class="swiper-pagination"></div>
+                       <div class="swiper-scrollbar"></div> 
+                       
+                       
+                      
+                  </div>
+        </div>
+ 
+        <!-- <div class="row text-center pt-3">
+    
+            {% for hotel in hotels %}
+            <div class="col-lg-3">
+                <div class="card">
+            <a href=""  style="text-decoration: none;color: black;">
+                <img src="{{hotel.image.url}}" alt="" class="card-img-top img-fluid">
+                <p>{{ hotel.name }}</p>
+                <p>{{ hotel.price_per_day }}</p>
+                <button class="btn">View More</button>
+            </a>
+            </div>
+            </div>
+            {% empty %}
+            No hotels found.
+            {% endfor %}
+        </div> -->
+    
+        </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="row pt-5">
+                {% for tour_operator in tour_operators %}
+                <div class="col-lg-3">
+              <div class="card">
+                <a href="{% url 'operator_detail' tour_operator.id  %}">
+                <img src="{{tour_operator.image.url}}" class="card-img-top" alt="...">
+                </a>
+                <div class="card-body">
+                  <h5 class="card-title">{{ tour_operator.name }}</h5>
+                  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                  <a href="{% url 'operator_detail' tour_operator.id  %}" class="btn btn-primary">See More</a>
+                </div>
+              </div>
+              </div>
+              {% empty %}
+                    <p>No tour operators found.</p>
+            {% endfor %}
+            
+              </div>
+      </div>
+
+      
+    
+
+
+</div>
+
+</div>
+
+
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 4,
+        spaceBetween: 25,
+        loop: true,
+        centerSlide: 'true',
+      grabCursor: true,
+      slidesPerView: "auto",
+      
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+        dynamicBullets: true,
+      },
+      autoplay: {
+        delay: 3500,
+        disableOnInteraction: false,
+      },
+      breakpoints:{
+    0: {
+        slidesPerView: 1,
+    },
+    520: {
+        slidesPerView: 2,
+    },
+    950: {
+        slidesPerView: 3,
+    },
+  },
+      navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+  },
+    });
+  </script>
+
+<br>
+<br>
+{% endblock %}
